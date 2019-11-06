@@ -31,7 +31,9 @@ var timer;
 var game = {
   correct: 0,
   incorrect: 0,
-  counter: 120,
+  unanswered: 0,
+  counter: 10,
+  
   countdown: function() {
       //Accesing object property decrementing objectName.propertyName
     game.counter--;
@@ -40,15 +42,17 @@ var game = {
     if (game.counter === 0) {
       console.log("TIME UP");
       //accesing objects method done
+      
       game.done();
     }
+    
   },
 
   start: function() {
     timer = setInterval(game.countdown, 1000);
     //once the start button is clicked, the button disapear and game starts
     $("#sub-wrapper").prepend(
-      "<h2>Time Remaining: <span id='counter-number'>120</span> Seconds</h2>"
+      "<h2 >Time Remaining: <span id='counter-number'>10</span> Seconds</h2>"
     );
 
     $("#start").remove();
@@ -60,30 +64,38 @@ var game = {
           "' value='" + questions[i].options[j] + "''>" + questions[i].options[j]);
       }
     }
-
-    $("#quiz-area").append("<button id='done'>Done</button>");
+    
+    $("#quiz-area").append("<button id='done' class='tn btn-secondary btn-lg btn-block' >Done</button>");
+    
   },
 
   done: function() {
     var inputs = $("#quiz-area").children("input:checked");
     for (var i = 0; i < inputs.length; i++) {
+      
       if ($(inputs[i]).val() === questions[i].answer) {
         game.correct++;
-      } else {
-        game.incorrect++;
+
       }
-    }
+      else if($(inputs[i]).val() !== questions[i].answer) {
+        game.incorrect++;
+      } 
+     else if(!$(inputs[i]).val()){
+       game.unanswered++;
+  }
+}
     this.result();
   },
 
   result: function() {
     clearInterval(timer);
-
+    
     $("#sub-wrapper h2").remove();
 
     $("#quiz-area").html("<h2>All Done!</h2>");
     $("#quiz-area").append("<h3>Correct Answers: " + this.correct + "</h3>");
     $("#quiz-area").append("<h3>Incorrect Answers: " + this.incorrect + "</h3>");
+    $("#quiz-area").append("<h3>Unanswered Questions: " + this.unanswered + "</h3>");
   }
 };
 
@@ -102,7 +114,7 @@ $(document).on("click", "#start", function() {
    
     
   //  
-    f//unction countdown(){
+    //unction countdown(){
        // var counter = 30;
         //var interval = setInterval(function(){
           //  counter--;

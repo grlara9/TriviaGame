@@ -3,3 +3,28 @@ body{
     background-repeat: repeat;
     color: balck;
 }
+
+#quiz-area{
+    background-color: #F0F0F0; 
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+    border-radius: 30px;
+}
+
+button {
+    display: block;
+    display: block;
+    max-width: 300px;
+    margin: 10px auto;
+    
+      
+    
+}
+
+h1{
+    text-align: center;
+}
+h2{
+    text-align: center;
+}
