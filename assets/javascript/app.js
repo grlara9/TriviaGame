@@ -31,8 +31,8 @@ var timer;
 var game = {
   correct: 0,
   incorrect: 0,
-  unanswered: 0,
-  counter: 10,
+  
+  counter: 30,
   
   countdown: function() {
       //Accesing object property decrementing objectName.propertyName
@@ -40,6 +40,7 @@ var game = {
     $("#counter-number").html(game.counter);
     //Game ends when counter is at 0
     if (game.counter === 0) {
+        
       console.log("TIME UP");
       //accesing objects method done
       
@@ -52,12 +53,15 @@ var game = {
     timer = setInterval(game.countdown, 1000);
     //once the start button is clicked, the button disapear and game starts
     $("#sub-wrapper").prepend(
-      "<h2 >Time Remaining: <span id='counter-number'>10</span> Seconds</h2>"
+      "<h1>Trivia Game</h1>",
+      "<h2 >Time Remaining: <span id='counter-number'>30</span> Seconds</h2>"
     );
 
     $("#start").remove();
+     //var ranArray= questions[Math.floor(Math.random()*items.length)];
 
     for (var i = 0; i < questions.length; i++) {
+     
       $("#quiz-area").append("<h2>" + questions[i].question + "</h2>");
       for (var j = 0; j < questions[i].options.length; j++) {
         $("#quiz-area").append("<input type='radio' name='question-" + i +
@@ -71,18 +75,17 @@ var game = {
 
   done: function() {
     var inputs = $("#quiz-area").children("input:checked");
+    console.log('inputs', inputs)
     for (var i = 0; i < inputs.length; i++) {
-      
-      if ($(inputs[i]).val() === questions[i].answer) {
+      const userAnswer = $(inputs[i]).val();
+      if (userAnswer === questions[i].answer) {
         game.correct++;
 
       }
-      else if($(inputs[i]).val() !== questions[i].answer) {
+      else  {
         game.incorrect++;
       } 
-     else if(!$(inputs[i]).val()){
-       game.unanswered++;
-  }
+     
 }
     this.result();
   },
@@ -90,12 +93,14 @@ var game = {
   result: function() {
     clearInterval(timer);
     
+    var answerInputs = $("#quiz-area").children("input:checked");
+    const unanswered = questions.length - answerInputs.length;
     $("#sub-wrapper h2").remove();
 
     $("#quiz-area").html("<h2>All Done!</h2>");
     $("#quiz-area").append("<h3>Correct Answers: " + this.correct + "</h3>");
     $("#quiz-area").append("<h3>Incorrect Answers: " + this.incorrect + "</h3>");
-    $("#quiz-area").append("<h3>Unanswered Questions: " + this.unanswered + "</h3>");
+    $("#quiz-area").append("<h3>Unanswered Questions: " + unanswered + "</h3>");
   }
 };
 
@@ -104,6 +109,7 @@ $(document).on("click", "#start", function() {
   });
   
   $(document).on("click", "#done", function() {
+    game.unanswered++;
     game.done();
   });
   
